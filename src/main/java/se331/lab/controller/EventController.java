@@ -1,10 +1,13 @@
 package se331.lab.controller;
 
 import jakarta.annotation.PostConstruct;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 import se331.lab.entity.Event;
 
 import java.util.ArrayList;
@@ -98,5 +101,20 @@ public class EventController {
             return ResponseEntity.ok(output);
         }
         return ResponseEntity.ok(output);
+    }
+
+    @GetMapping("events/{id}")
+    public ResponseEntity<?> getEvent(@PathVariable("id") Long id) {
+        Event output = null;
+        for (Event event : eventList) {
+            if (event.getId().equals(id)) {
+                output = event;
+                break;
+            }
+        }
+        if (output != null) {
+            return ResponseEntity.ok(output);
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The given id is not found");
     }
 }
