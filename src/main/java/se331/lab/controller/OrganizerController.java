@@ -1,13 +1,11 @@
 package se331.lab.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import se331.lab.entity.Organizer;
 import se331.lab.service.OrganizerService;
@@ -23,15 +21,13 @@ public class OrganizerController {
     public ResponseEntity<?> getOrganizers(
             @RequestParam(value = "_limit", required = false) Integer perPage,
             @RequestParam(value = "_page", required = false) Integer page) {
-        List<Organizer> output = null;
-        Integer organizerSize = organizerService.getOrganizerSize();
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("x-total-count", String.valueOf(organizerSize));
+        Page<Organizer> pageOutput = organizerService.getOrganizers(perPage, page);
+        HttpHeaders responseHeader = new HttpHeaders();
+        responseHeader.set("x-total-count", String.valueOf(pageOutput.getTotalElements()));
         try {
-            output = organizerService.getOrganizers(perPage, page);
-            return ResponseEntity.ok().headers(headers).body(output);
+            return ResponseEntity.ok().headers(responseHeader).body(pageOutput.getContent());
         } catch (IndexOutOfBoundsException ex) {
-            return ResponseEntity.ok().headers(headers).body(output);
+            return ResponseEntity.ok().headers(responseHeader).body(pageOutput.getContent());
         }
     }
 
@@ -42,5 +38,11 @@ public class OrganizerController {
             return ResponseEntity.ok(output);
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The given id is not found");
+    }
+
+    @PostMapping("organizers")
+    public ResponseEntity<?> save(@RequestBody Organizer organizer) {
+        Organizer output = organizerService.save(organizer);
+        return ResponseEntity.ok(output);
     }
 }

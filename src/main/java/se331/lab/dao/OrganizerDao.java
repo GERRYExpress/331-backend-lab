@@ -1,11 +1,14 @@
 package se331.lab.dao;
 
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Repository;
 import se331.lab.entity.Organizer;
 
 import java.util.List;
 
 public interface OrganizerDao {
-    public Integer getOrganizerSize();
-    public List<Organizer> getOrganizers(Integer perPage, Integer page);
-    public Organizer getOrganizer(Long id);
+    Integer getOrganizerSize();
+    Page<Organizer> getOrganizers(Integer perPage, Integer page);
+    Organizer getOrganizer(Long id);
+    Organizer save(Organizer organizer);
 }
