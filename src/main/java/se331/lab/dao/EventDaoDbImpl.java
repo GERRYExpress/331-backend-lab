@@ -8,8 +8,6 @@ import org.springframework.stereotype.Repository;
 import se331.lab.entity.Event;
 import se331.lab.repository.EventRepository;
 
-import java.util.List;
-
 @Profile("db")
 @Repository
 @RequiredArgsConstructor
@@ -28,5 +26,10 @@ public class EventDaoDbImpl implements EventDao {
     @Override
     public Event getEvent(Long id) {
         return eventRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Event save(Event event) {
+        return eventRepository.save(event);
     }
 }
