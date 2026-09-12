@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import se331.lab.service.OrganizerService;
+import se331.lab.util.LabMapper;
 
 @RestController
 @RequiredArgsConstructor
@@ -12,6 +13,6 @@ public class OrganizerController {
 
     @GetMapping("/organizers")
     ResponseEntity<?> getOrganizer() {
-        return ResponseEntity.ok(organizerService.getAllOrganizer());
+        return ResponseEntity.ok(LabMapper.INSTANCE.getOrganizerDto(organizerService.getAllOrganizer()));
     }
 }
