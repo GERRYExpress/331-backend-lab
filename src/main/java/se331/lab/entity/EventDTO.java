@@ -22,6 +22,5 @@ public class EventDTO {
     String time;
     Boolean petsAllowed;
     EventOrganizerDTO organizer;
-    @Builder.Default
-    List<EventOwnParticipantsDTO> eventHistories = new ArrayList<>();
+    List<EventOwnParticipantsDTO> participants;
 }
